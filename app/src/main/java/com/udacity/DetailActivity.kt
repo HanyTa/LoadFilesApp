@@ -1,5 +1,6 @@
 package com.udacity
 
+import android.app.NotificationManager
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -18,6 +19,8 @@ class DetailActivity : AppCompatActivity() {
         file_name_value.text = intent.extras?.getString("name")
         status_value.text = intent.extras?.getString("status")
 
+        val notificationManager = getSystemService(NotificationManager::class.java)
+        notificationManager.cancelAll()
 
         done_button.setOnClickListener {
             startActivity(Intent(this@DetailActivity,MainActivity::class.java))

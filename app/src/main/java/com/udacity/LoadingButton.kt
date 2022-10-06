@@ -16,7 +16,7 @@ class LoadingButton @JvmOverloads constructor(
     private lateinit var canvas: Canvas
     private var widthSize = 0
     private var heightSize = 0
-    private var buttonColor: Int = resources.getColor(R.color.colorPrimary)
+    private var buttonColor: Int = R.attr.buttonBackgroundColor
     private var text: String = resources.getString(R.string.button_name)
     private var progressValue: Float = 0f
     private val rectF = RectF()
@@ -76,6 +76,18 @@ class LoadingButton @JvmOverloads constructor(
 
     init {
         isClickable = true
+        context.theme.obtainStyledAttributes(
+            attrs,
+            R.styleable.LoadingButton,
+            0, 0).apply {
+
+            try {
+                text = getString(R.styleable.LoadingButton_buttonText).toString()
+                buttonColor = resources.getColor(R.color.colorPrimary)
+            } finally {
+                recycle()
+            }
+        }
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
@@ -97,8 +109,9 @@ class LoadingButton @JvmOverloads constructor(
             canvas.drawRect(0f, 0f, progress, measuredHeight.toFloat(), colorPaint)
             progress = progressValue * 360f
             canvas.drawArc(
+                measuredWidth.toFloat() -200f,
                 30f,
-                30f,measuredHeight.toFloat() -30f,
+                measuredWidth.toFloat() - 200f + 30f,
                 measuredHeight.toFloat() - 30f,
                 0f,
                 progress,
